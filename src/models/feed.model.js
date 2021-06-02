@@ -17,7 +17,7 @@ const feedModel = new Schema(
     },
     source: {
       type: String,
-      required: true,
+      required: false,
     },
     publisher: {
       type: String,
