@@ -51,7 +51,18 @@ const getFrontPageNewsFromEM = async () => {
   }
 };
 
+const getAllFrontPagesNews = async () => {
+  try {
+    console.log("Scraping...");
+    const epNews = await getFrontPageNewsFromEP();
+    const emNews = await getFrontPageNewsFromEM();
+    console.log("Scraping done");
+    return [...epNews, ...emNews];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
-  getFrontPageNewsFromEM,
-  getFrontPageNewsFromEP,
+  getAllFrontPagesNews,
 };

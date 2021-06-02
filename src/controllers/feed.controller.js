@@ -1,9 +1,6 @@
 const Feed = require("../models/feed.model");
 const moment = require("moment");
-const {
-  getFrontPageNewsFromEM,
-  getFrontPageNewsFromEP,
-} = require("../helpers/scrapper");
+const { getAllFrontPagesNews } = require("../helpers/scrapper");
 
 const todayNews = async () => {
   try {
@@ -13,10 +10,10 @@ const todayNews = async () => {
       createdAt: { $lte: today, $gt: yesterday },
     });
 
-    if (todayNews.length > 0) {
+    if (todayNews.length) {
       return todayNews;
     } else {
-      return await updateNewsFeeds();
+      return updateNewsFeeds();
     }
   } catch (error) {
     console.log(error);
@@ -25,23 +22,16 @@ const todayNews = async () => {
 
 const updateNewsFeeds = async () => {
   try {
-    const epNewsFeed = await getFrontPageNewsFromEP();
-    const emNewsFeed = await getFrontPageNewsFromEM();
+    const newsFeed = await getAllFrontPagesNews();
 
-    epNewsFeed.forEach(async (newFeed) => {
-      await Feed.findOneAndUpdate({ title: newFeed.title }, newFeed, {
+    for (const feed of newsFeed) {
+      await Feed.findOneAndUpdate({ title: feed.title }, feed, {
         new: true,
         upsert: true,
       });
-    });
-    emNewsFeed.forEach(async (newFeed) => {
-      await Feed.findOneAndUpdate({ title: newFeed.title }, newFeed, {
-        new: true,
-        upsert: true,
-      });
-    });
-
+    }
     const newsFeedList = await Feed.find();
+
     return newsFeedList;
   } catch (error) {
     console.log(error);
