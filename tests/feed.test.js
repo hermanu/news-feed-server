@@ -11,7 +11,6 @@ describe("Feed endpoints", () => {
       .expect("Content-Type", /json/)
       .expect(200)
       .then((res) => {
-        console.log(res.body);
         expect(text).to.not.be.undefined;
         expect(text).to.be.an("object");
       });
