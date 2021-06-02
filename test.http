@@ -1,6 +1,26 @@
-DELETE http://localhost:3000/feed/60b785c49ee5d25982ea4d7e HTTP/1.1
+GET http://localhost:3000/feed HTTP/1.1
 content-type: application/json
 
 {
    
+}
+
+###
+POST http://localhost:3000/feed/forceUpdate HTTP/1.1
+content-Type: application/json
+
+{
+
+}
+
+###
+POST http://localhost:3000/feed HTTP/1.1
+content-Type: application/json
+
+{
+    "title": "Title1",
+    "body": "Body1",
+    "source": "Source1",
+    "publisher": "Publisher1"
+    
 }

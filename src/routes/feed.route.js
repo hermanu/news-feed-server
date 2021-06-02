@@ -31,4 +31,13 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.post("/forceUpdate", async (req, res) => {
+  try {
+    const data = await Feed.updateNewsFeeds();
+    res.status(200).json({ data });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

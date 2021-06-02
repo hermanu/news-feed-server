@@ -48,6 +48,8 @@ const createFeed = async (data) => {
     newFeed.img = data.img || "Image not found";
     newFeed.publishser = data.publisher || "Unknow publisher";
     await newFeed.save();
+
+    return await Feed.findById(newFeed._id);
   } catch (error) {
     console.log(error);
   }
