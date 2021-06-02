@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-require("dotenv").config();
+require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 // Connect to mongo
 
 const mongoose = require("mongoose");
@@ -12,7 +12,7 @@ mongoose.connect(
     useUnifiedTopology: true,
     useFindAndModify: false,
   },
-  (err) => (err ? console.log(err) : console.log("mongodb connected"))
+  (err) => console.log(error)
 );
 
 app.use(express.json());
@@ -20,10 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 const routes = require("./src/routes");
 
 app.use("/", routes);
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
 
 app.listen(process.env.PORT, () => {
   console.log(`App listening at http://localhost:${process.env.PORT}`);
 });
+
+module.exports = app;
