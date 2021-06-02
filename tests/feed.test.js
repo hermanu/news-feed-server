@@ -11,8 +11,8 @@ describe("Feed endpoints", () => {
       .expect("Content-Type", /json/)
       .expect(200)
       .then((res) => {
-        expect(text).to.not.be.undefined;
-        expect(text).to.be.an("object");
+        expect(res.body).to.not.be.undefined;
+        expect(res.body).to.be.an("object");
       });
   });
 });
