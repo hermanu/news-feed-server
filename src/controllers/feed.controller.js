@@ -13,31 +13,32 @@ const todayNews = async () => {
     if (todayNews.length) {
       return todayNews;
     } else {
-      return updateNewsFeeds();
+      return await updateNewsFeeds();
     }
   } catch (error) {
     console.log(error);
   }
 };
 
+// Force update to news feeds
 const updateNewsFeeds = async () => {
   try {
     const newsFeed = await getAllFrontPagesNews();
-
+    const newsFeedList = [];
     for (const feed of newsFeed) {
-      await Feed.findOneAndUpdate({ title: feed.title }, feed, {
+      const newFeed = await Feed.findOneAndUpdate({ title: feed.title }, feed, {
         new: true,
         upsert: true,
       });
+      newsFeedList.push(newFeed);
     }
-    const newsFeedList = await Feed.find();
-
     return newsFeedList;
   } catch (error) {
     console.log(error);
   }
 };
 
+// Create feed manually
 const createFeed = async (data) => {
   try {
     let newFeed = new Feed();
@@ -52,8 +53,20 @@ const createFeed = async (data) => {
   }
 };
 
+// Delete feed
+const deleteFeed = async (id) => {
+  try {
+    let filter = { _id: id };
+    const deletedCount = await Feed.remove(filter);
+    return deletedCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   updateNewsFeeds,
   createFeed,
+  deleteFeed,
   todayNews,
 };

@@ -20,4 +20,15 @@ router.post("/", async (req, res) => {
     console.log(error);
   }
 });
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = await Feed.deleteFeed(id);
+    res.status(200).json({ data: deleted });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
