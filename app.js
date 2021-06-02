@@ -1,13 +1,12 @@
 const express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
-const port = 3000;
 
+require("dotenv").config();
 // Connect to mongo
+
 const mongoose = require("mongoose");
-const MONGO_DB_URI = "mongodb://localhost:27017/avantio";
 mongoose.connect(
-  MONGO_DB_URI,
+  process.env.MONGO_DB_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -24,6 +23,6 @@ app.get("/", (req, res) => {
   res.send("Hello");
 });
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`App listening at http://localhost:${process.env.PORT}`);
 });
