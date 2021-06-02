@@ -57,7 +57,7 @@ const createFeed = async (data) => {
 const deleteFeed = async (id) => {
   try {
     let filter = { _id: id };
-    const deletedCount = await Feed.remove(filter);
+    const deletedCount = await Feed.deleteOne(filter);
     return deletedCount;
   } catch (error) {
     console.log(error);
