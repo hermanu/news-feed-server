@@ -4,10 +4,10 @@ const { getAllFrontPagesNews } = require("../helpers/scrapper");
 
 const todayNews = async () => {
   try {
-    const today = moment().format();
-    const yesterday = moment().subtract(1, "day").format();
+    const today = moment().startOf("day").format();
+    // const yesterday = moment().endOf("day").subtract(1, "day").format();
     const todayNews = await Feed.find({
-      createdAt: { $lte: today, $gt: yesterday },
+      createdAt: { $gte: today },
     });
 
     if (todayNews.length) {
