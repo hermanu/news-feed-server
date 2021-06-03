@@ -2,10 +2,10 @@ const Feed = require("../models/feed.model");
 const moment = require("moment");
 const { getAllFrontPagesNews } = require("../helpers/scrapper");
 
-const todayNews = async () => {
+//Get news feed, forces update if no news were to be found
+const getNewsFeed = async () => {
   try {
     const today = moment().startOf("day").format();
-    // const yesterday = moment().endOf("day").subtract(1, "day").format();
     const todayNews = await Feed.find({
       createdAt: { $gte: today },
     });
@@ -26,10 +26,14 @@ const updateNewsFeeds = async () => {
     const newsFeed = await getAllFrontPagesNews();
     const newsFeedList = [];
     for (const feed of newsFeed) {
-      const newFeed = await Feed.findOneAndUpdate({ title: feed.title }, feed, {
-        new: true,
-        upsert: true,
-      });
+      const newFeed = await Feed.findOneAndUpdate(
+        { title: feed.title, publisher: feed.publisher },
+        feed,
+        {
+          new: true,
+          upsert: true,
+        }
+      );
       newsFeedList.push(newFeed);
     }
     return newsFeedList;
@@ -47,9 +51,7 @@ const createFeed = async (data) => {
     newFeed.source = data.source || "Unknow source";
     newFeed.img = data.img || "Image not found";
     newFeed.publishser = data.publisher || "Unknow publisher";
-    await newFeed.save();
-
-    return await Feed.findById(newFeed._id);
+    return await newFeed.save();
   } catch (error) {
     console.log(error);
   }
@@ -67,9 +69,9 @@ const deleteFeed = async (id) => {
 };
 
 // Update single feed
-const updateFeed = async (feed) => {
+const updateFeed = async (id, feed) => {
   try {
-    let filter = { _id: feed.id };
+    let filter = { _id: id };
     const updatedFeed = await Feed.findOneAndUpdate(filter, feed, {
       new: true,
     });
@@ -83,6 +85,6 @@ module.exports = {
   updateNewsFeeds,
   createFeed,
   deleteFeed,
-  todayNews,
+  getNewsFeed,
   updateFeed,
 };
