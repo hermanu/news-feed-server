@@ -34,6 +34,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//Update feed by id
 router.patch("/:id", async (req, res) => {
   try {
     const id = req.params.id;
