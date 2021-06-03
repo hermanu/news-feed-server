@@ -13,7 +13,7 @@ mongoose.connect(
     useFindAndModify: false,
   },
   (err) => {
-    if (err) console.log(err);
+    err ? console.log(err) : console.log("Connected to mongo");
   }
 );
 
