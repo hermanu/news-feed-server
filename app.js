@@ -12,7 +12,9 @@ mongoose.connect(
     useUnifiedTopology: true,
     useFindAndModify: false,
   },
-  (err) => console.log(error)
+  (err) => {
+    if (err) console.log(err);
+  }
 );
 
 app.use(express.json());
