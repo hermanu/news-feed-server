@@ -9,6 +9,7 @@ const feedExample = {
   source: "Test Source",
   publisher: "Test Publisher",
 };
+let feed = {};
 
 describe("Feed endpoints", () => {
   it("GET /feed", async () => {
@@ -34,14 +35,40 @@ describe("Feed endpoints", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body).to.not.be.undefined;
-        expect(body).to.be.an("object").that.has.keys("data", "status");
+        expect(body).to.be.an("object").that.has.key("data");
         expect(body.data).to.have.any.keys(
           "title",
           "body",
           "img",
           "source",
-          "publisher"
+          "publisher",
+          "createdAt"
         );
+        feed = body.data;
+      });
+  });
+
+  it("UPDATE /feed/:id", async () => {
+    feed.title = "New Title";
+    await request(app)
+      .patch(`/feed/${feed._id}`)
+      .set("Accept", "application/json")
+      .send(feed)
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then(({ body }) => {
+        // console.log(body);
+      });
+  });
+
+  it("DELETE /feed/:id", async () => {
+    await request(app)
+      .delete(`/feed/${feed._id}`)
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).to.be.an("object").that.has.key("data");
       });
   });
 });

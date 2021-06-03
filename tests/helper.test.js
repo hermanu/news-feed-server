@@ -8,8 +8,7 @@ before(async () => {
 
 describe("Scrapper", () => {
   it("returns an array of feeds", () => {
-    expect(newsFeed).to.be.an("array");
-    expect(newsFeed).length.to.be.above(0).and.below(11);
+    expect(newsFeed).to.be.an("array").length(10);
   });
 
   it("feeds are valid objects ", () => {
