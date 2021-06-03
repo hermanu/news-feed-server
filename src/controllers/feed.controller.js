@@ -20,7 +20,7 @@ const todayNews = async () => {
   }
 };
 
-// Force update to news feeds
+// Force update all news feeds
 const updateNewsFeeds = async () => {
   try {
     const newsFeed = await getAllFrontPagesNews();
@@ -66,9 +66,23 @@ const deleteFeed = async (id) => {
   }
 };
 
+// Update single feed
+const updateFeed = async (feed) => {
+  try {
+    let filter = { _id: feed.id };
+    const updatedFeed = await Feed.findOneAndUpdate(filter, feed, {
+      new: true,
+    });
+    return updatedFeed;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   updateNewsFeeds,
   createFeed,
   deleteFeed,
   todayNews,
+  updateFeed,
 };
