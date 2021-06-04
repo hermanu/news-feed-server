@@ -7,7 +7,9 @@ require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
 const mongoose = require("mongoose");
 mongoose.connect(
-  process.env.MONGO_DB_URI,
+  process.env.MONGO_DB_URI
+    ? process.env.MONGO_DB_URI
+    : "mongodb://mongo:27017/db",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -25,8 +27,8 @@ const routes = require("./src/routes");
 
 app.use("/", routes);
 
-app.listen(process.env.PORT, () => {
-  console.log(`App listening at http://localhost:${process.env.PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App listening at http://localhost:${process.env.PORT || 3000}`);
 });
 
 module.exports = app;
