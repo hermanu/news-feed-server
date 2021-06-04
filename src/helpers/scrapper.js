@@ -12,7 +12,9 @@ const getFrontPageNewsFromEP = async () => {
       const mainNew = {
         title: $(article).find(".headline").text(),
         body: $(article).find(".description").text(),
-        img: $(article).find("img").attr("src"),
+        img:
+          $(article).find("img").attr("src") ||
+          $(article).find("video").attr("poster"),
         source: $(article).find(".author").text(),
         publisher: "El Pais",
       };

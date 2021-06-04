@@ -80,11 +80,19 @@ const updateFeed = async (id, feed) => {
     console.log(error);
   }
 };
-
+// GET newFeed by id
+const getFeedById = async (id) => {
+  try {
+    return await Feed.findById(id);
+  } catch (error) {
+    console.log();
+  }
+};
 module.exports = {
   updateNewsFeeds,
   createFeed,
   deleteFeed,
   getNewsFeed,
   updateFeed,
+  getFeedById,
 };
