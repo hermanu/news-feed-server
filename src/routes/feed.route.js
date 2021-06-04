@@ -13,6 +13,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const newsFeed = await Feed.getFeedById(req.params.id);
+    return res.status(200).json({ data: newsFeed });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // Create new Feed manually
 router.post("/", async (req, res) => {
   try {
