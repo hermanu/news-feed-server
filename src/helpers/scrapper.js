@@ -29,13 +29,20 @@ const getFrontPageNewsFromEP = async () => {
 
 const getFrontPageNewsFromEM = async () => {
   try {
-    const { data: emData } = await axios.get("https://www.elmundo.es/");
-    const $ = cheerio.load(emData);
+    // Creo que el problema de los simbolos �, es culpa de la fuente? No estoy seguro y no se que mas hacer, llevo horas buscando.
+    const config = {
+      headers: {
+        "Content-type": "text/html; charset=ISO-8859-1",
+        "Content-Language": "es",
+      },
+    };
+    const res = await axios.get("https://www.elmundo.es/", config);
+    const $ = cheerio.load(res.data);
     const newsList = [];
     $("article").each((index, article) => {
       const mainNew = {
-        title: $(article).find(".ue-c-cover-content__kicker").text().trim(),
-        body: $(article).find(".ue-c-cover-content__headline").text().trim(),
+        title: $(article).find(".ue-c-cover-content__kicker").text(),
+        body: $(article).find(".ue-c-cover-content__headline").text(),
         img: $(article).find("img").attr("src"),
         source: $(article)
           .find(".ue-c-cover-content__byline-name")
