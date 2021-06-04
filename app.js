@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 // Connect to mongo
@@ -19,6 +20,7 @@ mongoose.connect(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 const routes = require("./src/routes");
 
 app.use("/", routes);
