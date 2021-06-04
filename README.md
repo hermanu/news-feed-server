@@ -12,7 +12,7 @@
 
 3. Build up Docker Images and rund the stack
 
-> docker compose -d --build
+> docker compose up -d --build
 
 Your app should be running on (if using native docker).:
 
