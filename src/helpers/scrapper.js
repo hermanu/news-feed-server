@@ -12,9 +12,11 @@ const getFrontPageNewsFromEP = async () => {
       const mainNew = {
         title: $(article).find(".headline").text(),
         body: $(article).find(".description").text(),
-        img: $(article).find("img").attr("src"),
-        source: "El Pais",
-        publisher: $(article).find(".author").text(),
+        img:
+          $(article).find("img").attr("src") ||
+          $(article).find("video").attr("poster"),
+        source: $(article).find(".author").text(),
+        publisher: "El Pais",
       };
       newsList.push(mainNew);
       if (index === LIMIT - 1) return false;
@@ -35,12 +37,12 @@ const getFrontPageNewsFromEM = async () => {
         title: $(article).find(".ue-c-cover-content__kicker").text().trim(),
         body: $(article).find(".ue-c-cover-content__headline").text().trim(),
         img: $(article).find("img").attr("src"),
-        source: "El Mundo",
-        publisher: $(article)
+        source: $(article)
           .find(".ue-c-cover-content__byline-name")
           .text()
           .replace(/\n/g, "")
           .trim(),
+        publisher: "El Mundo",
       };
       newsList.push(mainNew);
       if (index === LIMIT - 1) return false;
@@ -51,7 +53,18 @@ const getFrontPageNewsFromEM = async () => {
   }
 };
 
+const getAllFrontPagesNews = async () => {
+  try {
+    // console.log("Scraping...");
+    const epNews = await getFrontPageNewsFromEP();
+    const emNews = await getFrontPageNewsFromEM();
+    // console.log("Scraping done");
+    return [...epNews, ...emNews];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
-  getFrontPageNewsFromEM,
-  getFrontPageNewsFromEP,
+  getAllFrontPagesNews,
 };

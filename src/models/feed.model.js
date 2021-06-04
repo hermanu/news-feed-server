@@ -11,7 +11,7 @@ const feedModel = new Schema(
       type: String,
       required: true,
     },
-    image: {
+    img: {
       type: String,
       required: false,
     },

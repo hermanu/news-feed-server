@@ -1,19 +1,16 @@
 const Feed = require("../models/feed.model");
 const moment = require("moment");
-const {
-  getFrontPageNewsFromEM,
-  getFrontPageNewsFromEP,
-} = require("../helpers/scrapper");
+const { getAllFrontPagesNews } = require("../helpers/scrapper");
 
-const todayNews = async () => {
+//Get news feed, forces update if no news were to be found
+const getNewsFeed = async () => {
   try {
-    const today = moment().format();
-    const yesterday = moment().subtract(1, "day").format();
+    const today = moment().startOf("day").format();
     const todayNews = await Feed.find({
-      createdAt: { $lte: today, $gt: yesterday },
+      createdAt: { $gte: today },
     });
 
-    if (todayNews.length > 0) {
+    if (todayNews.length) {
       return todayNews;
     } else {
       return await updateNewsFeeds();
@@ -23,31 +20,29 @@ const todayNews = async () => {
   }
 };
 
+// Force update all news feeds
 const updateNewsFeeds = async () => {
   try {
-    const epNewsFeed = await getFrontPageNewsFromEP();
-    const emNewsFeed = await getFrontPageNewsFromEM();
-
-    epNewsFeed.forEach(async (newFeed) => {
-      await Feed.findOneAndUpdate({ title: newFeed.title }, newFeed, {
-        new: true,
-        upsert: true,
-      });
-    });
-    emNewsFeed.forEach(async (newFeed) => {
-      await Feed.findOneAndUpdate({ title: newFeed.title }, newFeed, {
-        new: true,
-        upsert: true,
-      });
-    });
-
-    const newsFeedList = await Feed.find();
+    const newsFeed = await getAllFrontPagesNews();
+    const newsFeedList = [];
+    for (const feed of newsFeed) {
+      const newFeed = await Feed.findOneAndUpdate(
+        { title: feed.title, publisher: feed.publisher },
+        feed,
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+      newsFeedList.push(newFeed);
+    }
     return newsFeedList;
   } catch (error) {
     console.log(error);
   }
 };
 
+// Create feed manually
 const createFeed = async (data) => {
   try {
     let newFeed = new Feed();
@@ -56,14 +51,48 @@ const createFeed = async (data) => {
     newFeed.source = data.source || "Unknow source";
     newFeed.img = data.img || "Image not found";
     newFeed.publishser = data.publisher || "Unknow publisher";
-    await newFeed.save();
+    return await newFeed.save();
   } catch (error) {
     console.log(error);
   }
 };
 
+// Delete feed
+const deleteFeed = async (id) => {
+  try {
+    let filter = { _id: id };
+    const deletedCount = await Feed.deleteOne(filter);
+    return deletedCount;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Update single feed
+const updateFeed = async (id, feed) => {
+  try {
+    let filter = { _id: id };
+    const updatedFeed = await Feed.findOneAndUpdate(filter, feed, {
+      new: true,
+    });
+    return updatedFeed;
+  } catch (error) {
+    console.log(error);
+  }
+};
+// GET newFeed by id
+const getFeedById = async (id) => {
+  try {
+    return await Feed.findById(id);
+  } catch (error) {
+    console.log();
+  }
+};
 module.exports = {
   updateNewsFeeds,
   createFeed,
-  todayNews,
+  deleteFeed,
+  getNewsFeed,
+  updateFeed,
+  getFeedById,
 };

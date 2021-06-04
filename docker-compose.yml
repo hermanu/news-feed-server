@@ -1,0 +1,48 @@
+version: "3"
+services:
+  client:
+    build: ./front-end
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/code/front-end
+  node:
+    restart: always
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/code
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+volumes:
+  mongodb:
+# version: "3"
+
+# services:
+#   client:
+#     build: ./front-end
+#     ports:
+#       - 8080:8080
+#     volumes:
+#       - ./client:/data
+
+#   server:
+#     build: ./
+#     ports:
+#       - 3000:3000
+#     volumes:
+#       - ./server:/data
+#     depends_on:
+#       - server-database
+
+#   server-database:
+#     image: mongo
+#     ports:
+#       - 27017:27017
+#     volumes:
+#       - ./db:/data/db
