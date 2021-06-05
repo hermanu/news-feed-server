@@ -9,9 +9,9 @@ const feedExample = {
   publisher: "Test Publisher",
 };
 
-before(async () => {
-  await FeedController.getNewsFeed();
-});
+// before(async () => {
+//   await FeedController.getNewsFeed();
+// });
 
 describe("Feed Controller ", () => {
   let newFeed = {};
@@ -19,14 +19,20 @@ describe("Feed Controller ", () => {
     newFeed = await FeedController.createFeed(feedExample);
     expect(newFeed).to.be.an("object");
     expect(newFeed.createdAt).to.not.be.undefined;
+    expect(newFeed.updatedAt).to.be.equal(newFeed.createdAt);
+  });
+
+  it("Get feed by Id", async () => {
+    const currentFeed = await FeedController.getFeedById(newFeed.id);
+    expect(currentFeed.id).to.be.equal(newFeed.id);
   });
 
   it("Update feed", async () => {
-    newFeed.title = "New Title";
-    await FeedController.updateFeed(newFeed);
-    expect(newFeed).to.be.an("object");
-    expect(newFeed.title).to.not.equal("Test title");
-    expect(newFeed.title).to.equal("New Title");
+    newFeed.title = "New Title Test";
+    const updatedFeed = await FeedController.updateFeed(newFeed.id, newFeed);
+    expect(updatedFeed).to.be.an("object");
+    expect(updatedFeed.updatedAt).to.not.be.equal(newFeed.createdAt);
+    expect(updatedFeed.title).to.equal(newFeed.title);
   });
 
   it("Delete feed", async () => {

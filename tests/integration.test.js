@@ -12,21 +12,20 @@ const feedExample = {
 let feed = {};
 
 describe("Feed endpoints", () => {
-  it("GET /feed", async () => {
+  it("GET /feed - Returns array of feeds", async () => {
     await request(app)
       .get("/feed")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
       .then(({ body }) => {
-        expect(body).to.not.be.undefined;
-        expect(body).to.be.an("object");
+        expect(body).to.be.an("object").that.has.key("data");
         expect(body.data).to.be.an("array");
         expect(body.data).length.to.be.above(0);
       });
   });
 
-  it("POST /feed", async () => {
+  it("POST /feed - Creates a new feed", async () => {
     await request(app)
       .post("/feed")
       .set("Accept", "application/json")
@@ -34,7 +33,6 @@ describe("Feed endpoints", () => {
       .expect("Content-Type", /json/)
       .expect(200)
       .then(({ body }) => {
-        expect(body).to.not.be.undefined;
         expect(body).to.be.an("object").that.has.key("data");
         expect(body.data).to.have.any.keys(
           "title",
@@ -48,7 +46,19 @@ describe("Feed endpoints", () => {
       });
   });
 
-  it("UPDATE /feed/:id", async () => {
+  it("GETBYID /feed:id - Retrieves feed information given an _id", async () => {
+    await request(app)
+      .get(`/feed/${feed._id}`)
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).to.be.an("object").that.has.key("data");
+        expect(body.data._id).to.equal(feed._id);
+      });
+  });
+
+  it("UPDATE /feed/:id - Updates feed given an _id", async () => {
     feed.title = "New Title";
     await request(app)
       .patch(`/feed/${feed._id}`)
@@ -57,11 +67,12 @@ describe("Feed endpoints", () => {
       .expect("Content-Type", /json/)
       .expect(200)
       .then(({ body }) => {
-        // console.log(body);
+        expect(body).to.be.an("object").that.has.key("data");
+        expect(body.data.title).to.be.equal(feed.title);
       });
   });
 
-  it("DELETE /feed/:id", async () => {
+  it("DELETE /feed/:id - Deletes feed given an _id", async () => {
     await request(app)
       .delete(`/feed/${feed._id}`)
       .set("Accept", "application/json")
@@ -69,6 +80,7 @@ describe("Feed endpoints", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body).to.be.an("object").that.has.key("data");
+        expect(body.data).to.have.keys("n", "ok", "deletedCount");
       });
   });
 });
