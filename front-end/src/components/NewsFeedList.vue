@@ -5,32 +5,40 @@
         <h1 style="cursor: pointer;" @click="forceUpdate" class="display-1">
           Today News
         </h1>
+        <br />
       </div>
-      <ul class="list-group list-group-flush">
+      <button
+        class="btn btn-outline-success new-feed-button"
+        @click="$router.push({ name: 'New' })"
+      >
+        New Feed
+      </button>
+      <ul style="margin-top:10px;" class="list-group list-group-flush">
         <li
-          class="list-group-item"
+          class="list-group-item custom-hover-effect"
           v-for="newFeed in newsFeedList"
           :key="newFeed._id"
+          @click="$router.push({ name: 'Edit', params: { id: newFeed._id } })"
         >
-          <h3>{{ newFeed.title }}</h3>
-          <p>{{ newFeed.body }}</p>
+          <h2>{{ newFeed.title }}</h2>
+          <h3>{{ newFeed.body }}</h3>
           <img
             v-if="newFeed.img"
             class="img-thumbnail"
             :src="newFeed.img"
             alt=""
           />
-          <p>{{ newFeed.publisher }}: {{ newFeed.source }}</p>
-          <button type="button" class="btn btn-outline-primary">
+          <h5>{{ newFeed.publisher }}: {{ newFeed.source }}</h5>
+          <!-- <button type="button" class="btn btn-outline-primary">
             <router-link
               :to="{
                 name: 'Edit',
-                params: { id: newFeed._id, newFeed },
+                params: { id: newFeed._id },
               }"
             >
               Editar noticia
-            </router-link>
-          </button>
+            </router-link> -->
+          <!-- </button> -->
         </li>
       </ul>
     </div>
@@ -65,7 +73,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .img-thumbnail {
   max-height: 30rem;
   max-width: 30rem;
@@ -74,5 +82,42 @@ export default {
 }
 .btn {
   border-radius: 10px;
+}
+.list-group-item {
+  font-family: "Merriweather", serif;
+  color: black;
+  background: linear-gradient(white, white 50%, #666 50%, #666);
+  background-size: 100% 202%;
+  transition: all 0.2s ease;
+  animation: down-bump 0.4s ease;
+}
+.list-group-item h2 {
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1.2;
+}
+
+.list-group-item h3 {
+  font: 1.1em "Lucida Grande", serif;
+}
+
+.list-group-item h5 {
+  font: 0.8em "Lucida Grande", serif;
+}
+
+.list-group-item:hover {
+  background-position: 100% 100%;
+  animation: up-bump 0.4s ease;
+  cursor: pointer;
+}
+
+.list-group-item:hover h2 {
+  color: white;
+}
+.list-group-item:hover h3 {
+  color: #48ad26;
+}
+.list-group-item:hover h5 {
+  color: #999;
 }
 </style>

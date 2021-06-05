@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import NewsFeedList from "@/components/NewsFeedList.vue";
 import Edit from "@/components/Edit.vue";
+import New from "@/components/New.vue";
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     name: "Edit",
     component: Edit,
     props: true,
+  },
+  {
+    path: "/new",
+    name: "New",
+    component: New,
   },
 ];
 
