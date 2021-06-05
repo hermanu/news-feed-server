@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
+    "start": "MONGO_DB_URI=mongodb://mongo:27017/avantio node app.js",
     "dev": "NODE_ENV=development nodemon app.js",
     "test": "MONGO_DB_URI=mongodb://localhost:27017/avantio-test mocha --exit ./tests/*"
   },

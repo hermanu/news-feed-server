@@ -6,7 +6,7 @@
 
 > git clone https://github.com/hermanu/news-feed-server
 
-2. Navigate into the directory VENoM-Docker
+2. Navigate into the directory
 
 > cd news-feed-server
 
