@@ -7,41 +7,32 @@
         </h1>
         <br />
       </div>
-      <button
-        class="btn btn-outline-success new-feed-button"
-        @click="$router.push({ name: 'New' })"
-      >
-        New Feed
-      </button>
-      <ul style="margin-top:10px;" class="list-group list-group-flush">
-        <li
-          class="list-group-item custom-hover-effect"
-          v-for="newFeed in newsFeedList"
-          :key="newFeed._id"
-          @click="$router.push({ name: 'Edit', params: { id: newFeed._id } })"
-        >
-          <h2>{{ newFeed.title }}</h2>
-          <h3>{{ newFeed.body }}</h3>
-          <img
-            v-if="newFeed.img"
-            class="img-thumbnail"
-            :src="newFeed.img"
-            alt=""
-          />
-          <h5>{{ newFeed.publisher }}: {{ newFeed.source }}</h5>
-          <!-- <button type="button" class="btn btn-outline-primary">
-            <router-link
-              :to="{
-                name: 'Edit',
-                params: { id: newFeed._id },
-              }"
-            >
-              Editar noticia
-            </router-link> -->
-          <!-- </button> -->
-        </li>
-      </ul>
     </div>
+
+    <button
+      class="btn btn-outline-success new-feed-button col-3"
+      @click="$router.push({ name: 'New' })"
+    >
+      New Feed
+    </button>
+    <ul style="margin-top:10px;" class="list-group list-group-flush">
+      <li
+        class="list-group-item custom-hover-effect col-12"
+        v-for="newFeed in newsFeedList"
+        :key="newFeed._id"
+        @click="$router.push({ name: 'Edit', params: { id: newFeed._id } })"
+      >
+        <h2>{{ newFeed.title }}</h2>
+        <h3>{{ newFeed.body }}</h3>
+        <img
+          v-if="newFeed.img"
+          class="img-thumbnail"
+          :src="newFeed.img"
+          alt=""
+        />
+        <h5>{{ newFeed.publisher }}: {{ newFeed.source }}</h5>
+      </li>
+    </ul>
   </div>
 </template>
 
