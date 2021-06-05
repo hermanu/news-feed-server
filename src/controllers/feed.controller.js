@@ -8,7 +8,7 @@ const getNewsFeed = async () => {
     const today = moment().startOf("day").format();
     const todayNews = await Feed.find({
       createdAt: { $gte: today },
-    });
+    }).sort({ createdAt: -1 });
 
     if (todayNews.length) {
       return todayNews;
@@ -50,7 +50,7 @@ const createFeed = async (data) => {
     newFeed.body = data.body;
     newFeed.source = data.source || "Unknow source";
     newFeed.img = data.img || "Image not found";
-    newFeed.publishser = data.publisher || "Unknow publisher";
+    newFeed.publisher = data.publisher || "Unknow publisher";
     return await newFeed.save();
   } catch (error) {
     console.log(error);
