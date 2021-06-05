@@ -19,7 +19,7 @@
     <div class="card-group">
       <div class="card" style="width: 100%; margin-top: 15px;">
         <img
-          v-show="currentFeed.img"
+          v-show="currentFeed.img && !isEditing"
           :src="currentFeed.img"
           class="card-img-center"
           alt="..."
@@ -74,6 +74,11 @@
             </svg>
           </button>
 
+          <textarea
+            v-show="isEditing"
+            v-model="currentFeed.img"
+            class="form-control"
+          ></textarea>
           <textarea
             v-show="isEditing"
             v-model="currentFeed.title"
