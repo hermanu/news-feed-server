@@ -25,7 +25,7 @@
         type="text"
         class="form-control"
         id="newFeedImg"
-        placeholder="Introduce la URL de la imagen"
+        placeholder=""
       />
 
       <label for="newFeedSource">Author de la noticia</label>
@@ -68,6 +68,7 @@ export default {
     const baseUrl = `http://localhost:3000/feed`;
     const newFeed = ref({});
     async function createNewFeed() {
+      console.log(newFeed.value);
       const response = await axios.post(baseUrl, newFeed.value);
       if (response.data.data) newFeed.value = {};
     }

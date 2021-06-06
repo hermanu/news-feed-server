@@ -16,6 +16,7 @@
       </svg>
     </button>
     <br />
+
     <div class="card-group">
       <div class="card" style="width: 100%; margin-top: 15px;">
         <img
@@ -25,13 +26,15 @@
           alt="..."
           style="min-width: 50%; max-width: 50%; margin: 0 auto;"
         />
-        <div class="card-body">
-          <h5 v-show="!isEditing" class="card-title">
+
+        <div class="card-body" v-show="!isEditing">
+          <h4 class="card-title">
             {{ currentFeed.title }}
-          </h5>
-          <p v-show="!isEditing" class="card-text">
+          </h4>
+          <h5 class="card-text">
             {{ currentFeed.body }}
-          </p>
+          </h5>
+          <p>{{ currentFeed.publisher }}: {{ currentFeed.source }}</p>
           <button
             v-show="!isEditing"
             @click="toggleEdit()"
@@ -50,7 +53,6 @@
               />
             </svg>
           </button>
-
           <button
             style="margin-left: 1rem;"
             v-show="!isEditing"
@@ -73,29 +75,45 @@
               />
             </svg>
           </button>
+        </div>
 
+        <div id="editingInputs" v-show="isEditing">
+          <label for="newFeedPublisher">Imagen</label>
           <textarea
-            v-show="isEditing"
+            id="newFeedPublisher"
             v-model="currentFeed.img"
             class="form-control"
           ></textarea>
+
+          <label for="newFeedTitle">Titulo</label>
           <textarea
-            v-show="isEditing"
+            id=""
             v-model="currentFeed.title"
             class="form-control"
           ></textarea>
           <br />
+          <label for="newFeedBody">Cuerpo</label>
           <textarea
-            v-show="isEditing"
+            id="newFeedBody"
             v-model="currentFeed.body"
             class="form-control"
           ></textarea>
+
+          <label for="newFeedAuthor">Autor</label>
+          <textarea
+            id="newFeedAuthor"
+            v-model="currentFeed.source"
+            class="form-control"
+          ></textarea>
+
+          <label for="newFeedPublisher">Fuente</label>
+          <textarea
+            id="newFeedPublisher"
+            v-model="currentFeed.publisher"
+            class="form-control"
+          ></textarea>
           <br />
-          <button
-            v-show="isEditing"
-            @click="updateCurrentFeed()"
-            class="btn btn-primary"
-          >
+          <button @click="updateCurrentFeed()" class="btn btn-primary">
             Guardar cambios
           </button>
         </div>
@@ -166,5 +184,9 @@ export default {
 <style scoped>
 .btn {
   border-radius: 10px;
+}
+label {
+  font: 1.2rem bold;
+  margin-top: 1rem;
 }
 </style>

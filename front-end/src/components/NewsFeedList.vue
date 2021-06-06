@@ -25,7 +25,7 @@
         <h2>{{ newFeed.title }}</h2>
         <h3>{{ newFeed.body }}</h3>
         <img
-          v-if="newFeed.img"
+          v-show="newFeed.img"
           class="img-thumbnail"
           :src="newFeed.img"
           alt=""
