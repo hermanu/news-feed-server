@@ -23,20 +23,26 @@ const getNewsFeed = async () => {
 // Force update all news feeds
 const updateNewsFeeds = async () => {
   try {
+    // Borrar todas las noticias de hoy y crear nuevas para evitar
+    // noticias duplicadas por estar modificadas
+
+    const today = moment().startOf("day").format();
     const newsFeed = await getAllFrontPagesNews();
-    const newsFeedList = [];
-    for (const feed of newsFeed) {
-      const newFeed = await Feed.findOneAndUpdate(
-        { title: feed.title, publisher: feed.publisher },
-        feed,
-        {
-          new: true,
-          upsert: true,
-        }
-      );
-      newsFeedList.push(newFeed);
+
+    const deleteTodayNews = await Feed.deleteMany({
+      createdAt: { $gte: today },
+    });
+
+    if (deleteTodayNews.ok === 1) {
+      for (const feed of newsFeed) {
+        await createFeed(feed);
+      }
     }
-    return newsFeedList;
+
+    const updatedFeedList = await Feed.find({
+      createdAt: { $gte: today },
+    }).sort({ createdAt: -1 });
+    return updatedFeedList;
   } catch (error) {
     console.log(error);
   }
@@ -48,9 +54,9 @@ const createFeed = async (data) => {
     let newFeed = new Feed();
     newFeed.title = data.title;
     newFeed.body = data.body;
-    newFeed.source = data.source || "Unknow source";
-    newFeed.img = data.img || "Image not found";
-    newFeed.publisher = data.publisher || "Unknow publisher";
+    newFeed.source = data.source;
+    newFeed.img = data.img;
+    newFeed.publisher = data.publisher;
     return await newFeed.save();
   } catch (error) {
     console.log(error);
